@@ -1,0 +1,28 @@
+certifi==2020.12.5
+chardet==4.0.0
+datasets==1.5.0
+dill==0.3.3
+filelock==3.0.12
+fsspec==0.9.0
+huggingface-hub==0.0.8
+idna==2.10
+mkl-fft
+mkl-random
+mkl-service
+multiprocess==0.70.11.1
+numpy @ file:///opt/concourse/worker/volumes/live/5572694e-967a-4c0c-52cf-b53d43e72de9/volume/numpy_and_numpy_base_1603491881791/work
+olefile==0.46
+pandas==1.2.4
+Pillow @ file:///opt/concourse/worker/volumes/live/ca23594b-6e35-4c8c-5637-50ac0b550473/volume/pillow_1617386168018/work
+pyarrow==3.0.0
+python-dateutil==2.8.1
+pytz==2021.1
+requests==2.25.1
+six @ file:///opt/concourse/worker/volumes/live/5b31cb27-1e37-4ca5-6e9f-86246eb206d2/volume/six_1605205320872/work
+torch==1.8.1
+torchaudio==0.8.1
+torchvision==0.9.1
+tqdm==4.49.0
+typing-extensions @ file:///home/ktietz/src/ci_mi/typing_extensions_1612808209620/work
+urllib3==1.26.4
+xxhash==2.0.2
