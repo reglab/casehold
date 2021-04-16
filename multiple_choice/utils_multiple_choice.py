@@ -233,9 +233,8 @@ class DataProcessor:
         raise NotImplementedError()
 
 
-# Data processor for CaseHOLD task dataset
 class CaseHOLDProcessor(DataProcessor):
-    """Processor for the Holding data set."""
+    """Processor for the CaseHOLD dataset"""
 
     def get_train_examples(self, data_dir):
         """See base class."""
