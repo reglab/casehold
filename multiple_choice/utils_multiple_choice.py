@@ -234,7 +234,7 @@ class DataProcessor:
 
 
 class CaseHOLDProcessor(DataProcessor):
-    """Processor for the CaseHOLD dataset"""
+    """Processor for the CaseHOLD dataset."""
 
     def get_train_examples(self, data_dir):
         """See base class."""
