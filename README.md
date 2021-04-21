@@ -29,12 +29,12 @@ Download the legal benchmark task datasets and the Legal-BERT/Custom Legal-BERT 
 	│ │ ├── tokenizer_config.json
 	│ │ └── vocab.txt
 	│ └── legalbert
-	│ ├── config.json
-	│ ├── pytorch_model.bin
-	│ ├── special_tokens_map.json
-	│ ├── tf_model.h5
-	│ ├── tokenizer_config.json
-	│ └── vocab.txt
+	│ │	├── config.json
+	│ │	├── pytorch_model.bin
+	│ │	├── special_tokens_map.json
+	│ │	├── tf_model.h5
+	│ │	├── tokenizer_config.json
+	│ │	└── vocab.txt
 
 To compute domain specificity scores (DS) for the tasks, take the average difference in pretrain loss between the BERT (double) model and the Legal-BERT model. The BERT (double) model is initialized with the base BERT model (uncased, 110M parameters), [bert-base-uncased](https://huggingface.co/bert-base-uncased), and pretrained for additional steps on the general domain BERT vocabulary for comparability to Legal-BERT/Custom Legal-BERT models. If you are interested in accessing the BERT (double) model files, please contact: [update with email].
 
