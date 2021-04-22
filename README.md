@@ -1,27 +1,35 @@
 ## When Does Pretraining Help? Assessing Self-Supervised Learning for Law and the CaseHOLD Dataset of 53,000+ Legal Holdings
 
-This is the repository for the paper, [When Does Pretraining Help? Assessing Self-Supervised Learning for Law and the CaseHOLD Dataset of 53,000+ Legal Holdings](https://arxiv.org/abs/2104.08671), accepted to ICAIL 2021.
+This is the repository for the paper, [When Does Pretraining Help? Assessing Self-Supervised Learning for Law and the CaseHOLD Dataset of 53,000+ Legal Holdings](https://arxiv.org/abs/2104.08671) (Zheng and Guha et al., 2021), accepted to ICAIL 2021.
 
-It includes models, datasets, and code for computing pretrain loss and finetuning Legal-BERT and Custom Legal-BERT models on legal benchmark tasks: Overruling, Terms of Service, CaseHOLD.
+It includes models, datasets, and code for computing pretrain loss and finetuning Legal-BERT, Custom Legal-BERT, and BERT (double) models on legal benchmark tasks: Overruling, Terms of Service, CaseHOLD.
 
 ### Download Models & Datasets
-The legal benchmark task datasets and Legal-BERT/Custom Legal-BERT model files can be downloaded from the [casehold Google Drive folder](https://drive.google.com/drive/folders/18YZpKNzbgG3ZWWgmu0Xz6oK3nuv0M2iK?usp=sharing). For more information, see the [Description](https://docs.google.com/document/d/1K3LtZ5Z6Zxh9Xuf5Pu0P4UuPXa_rCuE6b2_gL1yLej8/edit?usp=sharing) of the folder.
+The legal benchmark task datasets and Legal-BERT, Custom Legal-BERT, and BERT (double) model files can be downloaded from the [casehold Google Drive folder](https://drive.google.com/drive/folders/18YZpKNzbgG3ZWWgmu0Xz6oK3nuv0M2iK?usp=sharing). For more information, see the [Description](https://docs.google.com/document/d/1K3LtZ5Z6Zxh9Xuf5Pu0P4UuPXa_rCuE6b2_gL1yLej8/edit?usp=sharing) of the folder.
 
-Alternatively, the Legal-BERT/Custom Legal-BERT models can also be accessed directly from the Hugging Face model hub. To load a model from the model hub in a script, pass its Hugging Face model repository name to the `model_name_or_path` script argument. See `demo.ipynb` for more details.
+The models can also be accessed directly from the Hugging Face model hub. To load a model from the model hub in a script, pass its Hugging Face model repository name to the `model_name_or_path` script argument. See `demo.ipynb` for more details.
 
 **Hugging Face Model Repositories**
 
 -   Legal-BERT: `zlucia/legalbert` (https://huggingface.co/zlucia/legalbert)
 - Custom Legal-BERT: `zlucia/custom-legalbert` (https://huggingface.co/zlucia/custom-legalbert)
+- BERT (double): `zlucia/bert-double` (https://huggingface.co/zlucia/bert-double)
 
-Download the legal benchmark task datasets and the Legal-BERT/Custom Legal-BERT models (optional, scripts can directly load models from Hugging Face model repositories) and unzip them under the top-level directory like:
+Download the legal benchmark task datasets and the models (optional, scripts can directly load models from Hugging Face model repositories) from the casehold Google Drive folder and unzip them under the top-level directory like:
 
 	reglab/casehold
 	├── data
 	│ ├── casehold.csv
 	│ └── overruling.csv
 	├── models
-	│ ├── custom-legalbert
+	│ ├── bert-double
+	│ │ ├── config.json
+	│ │ ├── pytorch_model.bin
+	│ │ ├── special_tokens_map.json
+	│ │ ├── tf_model.h5
+	│ │ ├── tokenizer_config.json
+	│ │ └── vocab.txt
+	│ └── custom-legalbert
 	│ │ ├── config.json
 	│ │ ├── pytorch_model.bin
 	│ │ ├── special_tokens_map.json
@@ -36,8 +44,6 @@ Download the legal benchmark task datasets and the Legal-BERT/Custom Legal-BERT 
 	│ │ ├── tokenizer_config.json
 	│ │ └── vocab.txt
 
-To compute domain specificity scores (DS) for the tasks, take the average difference in pretrain loss between the BERT (double) model and the Legal-BERT model. The BERT (double) model is initialized with the base BERT model (uncased, 110M parameters), [bert-base-uncased](https://huggingface.co/bert-base-uncased), and pretrained for additional steps on the general domain BERT vocabulary for comparability to Legal-BERT/Custom Legal-BERT models. If you are interested in accessing the BERT (double) model files, please contact: [update with email].
-
 ### Requirements
 This code was tested with Python 3.7 and Pytorch 1.8.1.
 
@@ -50,21 +56,48 @@ Install transformers from source (required for tokenizers dependencies):
     pip install git+https://github.com/huggingface/transformers
 
 ### Model Descriptions
-####  Training Data
-The pretraining corpus was constructed by ingesting the entire Harvard Law case corpus from 1965 to the present (https://case.law/). The size of this corpus (37GB) is substantial, representing 3,446,187 legal decisions across all federal and state courts, and is larger than the size of the BookCorpus/Wikipedia corpus originally used to train BERT (15GB). We randomly sample 10% of decisions from this corpus as a holdout set, which we use to create the CaseHOLD dataset. The remaining 90% is used for pretraining. 
+#### Legal-BERT
+#####  Training Data
+The pretraining corpus was constructed by ingesting the entire [Harvard Law case corpus](https://case.law/) from 1965 to the present. The size of this corpus (37GB) is substantial, representing 3,446,187 legal decisions across all federal and state courts, and is larger than the size of the BookCorpus/Wikipedia corpus originally used to train BERT (15GB). We randomly sample 10% of decisions from this corpus as a holdout set, which we use to create the CaseHOLD dataset. The remaining 90% is used for pretraining. 
 
-#### Legal-BERT Training Objective
+##### Training Objective
 This model is initialized with the base BERT model (uncased, 110M parameters), [bert-base-uncased](https://huggingface.co/bert-base-uncased), and trained for an additional 1M steps on the MLM and NSP objective, with tokenization and sentence segmentation adapted for legal text (cf. the paper).
 
-#### Custom Legal-BERT Training Objective
+#### Custom Legal-BERT 
+##### Training Data
+Same pretraining corpus as Legal-BERT
+
+##### Training Objective
 This model is pretrained from scratch for 2M steps on the MLM and NSP objective, with tokenization and sentence segmentation adapted for legal text (cf. the paper). 
 
 The model also uses a custom domain-specific legal vocabulary. The vocabulary set is constructed using [SentencePiece](https://arxiv.org/abs/1808.06226) on a subsample (approx. 13M) of sentences from our pretraining corpus, with the number of tokens fixed to 32,000.
 
-### CaseHOLD Dataset Description
-The CaseHOLD dataset (Case Holdings On Legal Decisions) provides 53,000+ multiple choice questions with prompts from a judicial decision and five potential holdings, one of which is correct, that could be cited.
+#### BERT (double)
+##### Training Data
+BERT (double) is pretrained using the same English Wikipedia corpus that the base BERT model (uncased, 110M parameters), [bert-base-uncased](https://huggingface.co/bert-base-uncased), was pretrained on. For more information on the pretraining corpus, refer to the [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805) paper.
 
-We construct this dataset from a holdout set of the Harvard Case corpus. We extract the holding statement from citations (parenthetical text that begins with "holding'') as the correct answer and take the text before it as the citing text prompt. We insert a `<HOLDING>` token in the position of the citing text prompt where the holding statement was extracted. To select four incorrect answers for a citing text, we compute the TD-IDF similarity between the correct answer and the pool of other holding statements extracted from the corpus and select the most similar holding statements, to make the task more difficult. We set an upper threshold for similarity to rule out indistinguishable holding statements (here 0.75), which would make the task impossible.
+##### Training Objective
+This model is initialized with the base BERT model (uncased, 110M parameters), [bert-base-uncased](https://huggingface.co/bert-base-uncased), and trained for an additional 1M steps on the MLM and NSP objective. 
+
+This facilitates a direct comparison to our BERT-based models for the legal domain, Legal-BERT and Custom Legal-BERT, which are also pretrained for 2M total steps.
+
+### Legal Benchmark Task Descriptions
+#### Overruling
+We release the Overruling dataset in conjunction with [Casetext](https://casetext.com/), the creators of the dataset.
+
+The Overruling dataset corresponds to the task of determining when a sentence is overruling a prior decision. This is a binary classification task, where positive examples are overruling sentences and negative examples are non-overruling sentences extracted from legal opinions. In law, an overruling sentence is a statement that nullifies a previous case decision as a precedent, by a constitutionally valid statute or a decision by the same or higher ranking court which establishes a different rule on the point of law involved. The Overruling dataset consists of 2,400 examples.
+
+#### Terms of Service
+We provide a link to the Terms of Service dataset, created and made publicly accessible by the authors of [CLAUDETTE: an automated detector of potentially unfair clauses in online terms of service](https://arxiv.org/abs/1805.01217) (Lippi et al., 2019).
+
+The Terms of Service dataset corresponds to the task of identifying whether contractual terms are potentially unfair. This is a binary classification task, where positive examples are potentially unfair contractual terms (clauses) from the terms of service in consumer contracts. Article 3 of the [Directive 93/13 on Unfair Terms in Consumer Contracts](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:31993L0013&from=de) defines an unfair contractual term as follows. A contractual term is unfair if: (1) it has not been individually negotiated; and (2) contrary to the requirement of good faith, it causes a significant imbalance in the parties rights and obligations, to the detriment of the consumer. The Terms of Service dataset consists of 9,414 examples.
+
+#### CaseHOLD
+We release the CaseHOLD dataset, created by the authors of our paper, [When Does Pretraining Help? Assessing Self-Supervised Learning for Law and the CaseHOLD Dataset of 53,000+ Legal Holdings](https://arxiv.org/abs/2104.08671) (Zheng and Guha et al., 2021).
+
+The CaseHOLD dataset (Case Holdings On Legal Decisions) provides 53,000+ multiple choice questions with prompts from a judicial decision and multiple potential holdings, one of which is correct, that could be cited. Holdings are central to the common law system. They represent the the governing legal rule when the law is applied to a particular set of facts. It is what is precedential and what litigants can rely on in subsequent cases. The CaseHOLD task derived from the dataset is a multiple choice question answering task, with five candidate holdings (one correct, four incorrect) for each citing context.
+
+For more details on the construction of these legal benchmark task datasets, please see our [paper](https://arxiv.org/abs/2104.08671).
 
 ### Results
 The results from the paper for the baseline BiLSTM, base BERT model (uncased, 110M parameters), BERT (double), Legal-BERT, and Custom Legal-BERT, finetuned on the legal benchmark tasks, are displayed below.
@@ -73,6 +106,8 @@ The results from the paper for the baseline BiLSTM, base BERT model (uncased, 11
 
 ### Demo
 `demo.ipynb` provides examples of how to run the scripts to compute pretrain loss and finetune Legal-BERT/Custom Legal-BERT models on the legal benchmark tasks. These examples should be able to run on a GPU that has 16GB of RAM using the hyperparameters specified in the examples.
+
+See `demo.ipynb` for details on calculating domain specificity (DS) scores for tasks or task examples by taking the difference in pretrain loss on BERT (double) and Legal-BERT. DS score may be readily extended to estimate domain specificity of tasks in other domains using BERT (double) and existing pretrained models (e.g., [SciBERT](https://arxiv.org/abs/1903.10676)).
 
 ### Citation
 If you are using this work, please cite it as:
