@@ -99,6 +99,11 @@ The CaseHOLD dataset (Case Holdings On Legal Decisions) provides 53,000+ multipl
 
 For more details on the construction of these legal benchmark task datasets, please see our [paper](https://arxiv.org/abs/2104.08671).
 
+### Hyperparameters for Downstream Tasks
+We split each task dataset into a train and test set with an 80/20 split for hyperparameter tuning. For the baseline model, we performed a random search with batch size set to 16 and 32 over learning rates in the bounded domain 1e-5 to 1e-2, training for a maximum of 20 epochs. To set the model hyperparameters for fine-tuning our BERT and Legal-BERT models, we refer to the suggested hyperparameter ranges for batch size, learning rate and number of epochs in [Devlin et al.](https://arxiv.org/abs/1810.04805) as a reference point and perform two rounds of grid search for each task. We performed the coarse round of grid search with batch size set to 16 for Overruling and Terms of Service and batch size set to 128 for Citation, over learning rates: 1e-6, 1e-5, 1e-4, training for a maximum of 4 epochs. From the coarse round, we discovered that the optimal learning rates for the legal benchmark tasks were smaller than the lower end of the range suggested in Devlin et al., so we performed a finer round of grid search over a range that included smaller learning rates. For Overruling and Terms of Service, we performed the finer round of grid search over batch sizes (16, 32) and learning rates (5e-6, 1e-5, 2e-5, 3e-5, 5e-5), training for a maximum of 4 epochs. For CaseHOLD, we performed the finer round of grid search with batch size set to 128 over learning rates (1e-6, 3e-6, 5e-6, 7e-6, 9e-6), training for a maximum of 4 epochs. We report the hyperparameters used for evaluation in the table below.
+
+<img src="figures/hyperparameters.png" alt="Hyperparameter Table" width="500"/>
+
 ### Results
 The results from the paper for the baseline BiLSTM, base BERT model (uncased, 110M parameters), BERT (double), Legal-BERT, and Custom Legal-BERT, finetuned on the legal benchmark tasks, are displayed below.
 
