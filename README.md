@@ -58,7 +58,7 @@ Install transformers from source (required for tokenizers dependencies):
 ### Model Descriptions
 #### Legal-BERT
 #####  Training Data
-The pretraining corpus was constructed by ingesting the entire [Harvard Law case corpus](https://case.law/) from 1965 to the present. The size of this corpus (37GB) is substantial, representing 3,446,187 legal decisions across all federal and state courts, and is larger than the size of the BookCorpus/Wikipedia corpus originally used to train BERT (15GB). We randomly sample 10% of decisions from this corpus as a holdout set, which we use to create the CaseHOLD dataset. The remaining 90% is used for pretraining. 
+The pretraining corpus was constructed by ingesting the entire [Harvard Law case corpus](https://case.law/) from 1965 to the present. The size of this corpus (37GB) is substantial, representing 3,446,187 legal decisions across all federal and state courts, and is larger than the size of the BookCorpus/Wikipedia corpus originally used to train BERT (15GB). We randomly sample 10% of decisions from this corpus as a holdout set, which we use to create the CaseHOLD dataset. The remaining 90% is used for pretraining. Please see the `case_ids` directory for the case IDs used for pretraining and CaseHOLD task creation. These case IDs are unique identifiers assigned to cases by the Harvard Law case corpus. The mapping of case IDs to cases can be found at: https://case.law/.
 
 ##### Training Objective
 This model is initialized with the base BERT model (uncased, 110M parameters), [bert-base-uncased](https://huggingface.co/bert-base-uncased), and trained for an additional 1M steps on the MLM and NSP objective, with tokenization and sentence segmentation adapted for legal text (cf. the paper).
@@ -125,8 +125,7 @@ If you are using this work, please cite it as:
 		archivePrefix={arXiv},
 		primaryClass={cs.CL},
 		booktitle={Proceedings of the 18th International Conference on Artificial Intelligence and Law},
-		publisher={Association for Computing Machinery},
-		note={(in press)}
+		publisher={Association for Computing Machinery}
 	}
 
 Lucia Zheng, Neel Guha, Brandon R. Anderson, Peter Henderson, and Daniel E. Ho. 2021. When Does Pretraining Help? Assessing Self-Supervised Learning for Law and the CaseHOLD Dataset. In *Proceedings of the 18th International Conference on Artificial Intelligence and Law (ICAIL '21)*, June 21-25, 2021,  São Paulo, Brazil. ACM Inc., New York, NY, (in press). arXiv: [2104.08671 \[cs.CL\]](https://arxiv.org/abs/2104.08671).
