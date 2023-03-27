@@ -5,44 +5,9 @@ This is the repository for the paper, [When Does Pretraining Help? Assessing Sel
 It includes models, datasets, and code for computing pretrain loss and finetuning Legal-BERT, Custom Legal-BERT, and BERT (double) models on legal benchmark tasks: Overruling, Terms of Service, CaseHOLD.
 
 ### Download Models & Datasets
-The legal benchmark task datasets and Legal-BERT, Custom Legal-BERT, and BERT (double) model files can be downloaded from the [casehold Google Drive folder](https://drive.google.com/drive/folders/18YZpKNzbgG3ZWWgmu0Xz6oK3nuv0M2iK?usp=sharing). For more information, see the [Description](https://docs.google.com/document/d/1K3LtZ5Z6Zxh9Xuf5Pu0P4UuPXa_rCuE6b2_gL1yLej8/edit?usp=sharing) of the folder.
+The CaseHOLD dataset and the models can be downloaded directly from Hugging Face: https://huggingface.co/casehold. See `demo.ipynb` for more details on model use.
 
-The models can also be accessed directly from the Hugging Face model hub. To load a model from the model hub in a script, pass its Hugging Face model repository name to the `model_name_or_path` script argument. See `demo.ipynb` for more details.
-
-**Hugging Face Model Repositories**
-
--   Legal-BERT: `zlucia/legalbert` (https://huggingface.co/zlucia/legalbert)
-- Custom Legal-BERT: `zlucia/custom-legalbert` (https://huggingface.co/zlucia/custom-legalbert)
-- BERT (double): `zlucia/bert-double` (https://huggingface.co/zlucia/bert-double)
-
-Download the legal benchmark task datasets and the models (optional, scripts can directly load models from Hugging Face model repositories) from the casehold Google Drive folder and unzip them under the top-level directory like:
-
-	reglab/casehold
-	├── data
-	│ ├── casehold.csv
-	│ └── overruling.csv
-	├── models
-	│ ├── bert-double
-	│ │ ├── config.json
-	│ │ ├── pytorch_model.bin
-	│ │ ├── special_tokens_map.json
-	│ │ ├── tf_model.h5
-	│ │ ├── tokenizer_config.json
-	│ │ └── vocab.txt
-	│ └── custom-legalbert
-	│ │ ├── config.json
-	│ │ ├── pytorch_model.bin
-	│ │ ├── special_tokens_map.json
-	│ │ ├── tf_model.h5
-	│ │ ├── tokenizer_config.json
-	│ │ └── vocab.txt
-	│ └── legalbert
-	│ │ ├── config.json
-	│ │ ├── pytorch_model.bin
-	│ │ ├── special_tokens_map.json
-	│ │ ├── tf_model.h5
-	│ │ ├── tokenizer_config.json
-	│ │ └── vocab.txt
+The legal benchmark task datasets (Overruling, Terms of Service, and CaseHOLD) and the models can also be downloaded from the [casehold Google Drive folder](https://drive.google.com/drive/folders/18YZpKNzbgG3ZWWgmu0Xz6oK3nuv0M2iK?usp=sharing). For more information, see the [Description](https://docs.google.com/document/d/1K3LtZ5Z6Zxh9Xuf5Pu0P4UuPXa_rCuE6b2_gL1yLej8/edit?usp=sharing) document.
 
 ### Requirements
 This code was tested with Python 3.7 and Pytorch 1.8.1.
