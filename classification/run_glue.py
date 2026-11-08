@@ -337,7 +337,7 @@ def main():
 
 			output_eval_file = os.path.join(training_args.output_dir, "eval_results.txt")
 			if trainer.is_world_process_zero():
-				with open(output_eval_file, "w") as writer:
+				with open(output_eval_file, "w", encoding="utf-8") as writer:
 					logger.info(f"***** Eval results *****")
 					for key, value in eval_result.items():
 						logger.info(f"  {key} = {value}")
